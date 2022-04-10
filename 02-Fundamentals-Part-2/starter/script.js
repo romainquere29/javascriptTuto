@@ -291,6 +291,63 @@ GOOD LUCK 😀
 //     console.log(`${mark.fullname}'s bmi : ${mark.bmi} is lower than ${john.fullname}'s bmi :  ${john.bmi}`);
 // }
 
-for (let rep=1; rep <= 10;rep+=1) {
-    console.log(`Lifting weights repetition ${rep} 💪`);
+// for (let rep=1; rep <= 10;rep+=1) {
+//     console.log(`Lifting weights repetition ${rep} 💪`);
+// }
+
+// const friends=['toto','titi','John',4];
+// const romain = [
+//         'Romain',
+//         'Quéré',
+//         2022-1986,
+//         'DevOPS',
+//         friends
+// ];
+
+// let romainType = []
+
+// for (let i=0; i < romain.length ; i++) {
+//     // console.log(romain[i], typeof(romain[i]));
+//     // romainType[i] = typeof(romain[i]);
+//     romainType.push(typeof(romain[i]));
+// }
+
+// console.log(romainType);
+
+//CODING CHALLENGE N°4
+
+function TipsCalculator(bill) {
+    let tips;
+    if (bill >= 50 && bill <= 300) {
+        tips = bill*0.15;
+    }
+    else {
+        tips = bill*0.2;
+    }
+    return tips
 }
+
+const bills = [22,295,176,400,37,105,10,1108,86,52];
+const tips = [];
+const totals = [];
+
+console.log(bills.length);
+for (let i = 0; i < bills.length -1 ; i++) {
+    console.log(bills[i]);
+    const tip=TipsCalculator(bills[i]);
+    tips.push(tip);
+    totals.push(bills[i]+tip);
+}
+
+// console.log(bills);
+// console.log(tips);
+console.log(totals);
+
+
+let sum=0;
+for (let i = 0; i < bills.length -1 ; i++) {
+    sum+=bills[i];
+}
+// console.log(sum);
+const avg = sum / bills.length;
+console.log(avg);

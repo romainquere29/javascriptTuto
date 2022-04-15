@@ -2,7 +2,7 @@
 
 
 
-const secretNumber = Math.trunc(Math.random() * 20) + 1;
+let secretNumber = Math.trunc(Math.random() * 20) + 1;
 console.log(secretNumber);
 let score = 20;
 // document.querySelector('.number').textContent = secretNumber;
@@ -46,13 +46,15 @@ document.querySelector('.check').addEventListener('click',function () {
 })
 
 document.querySelector('.again').addEventListener('click',function () {
-    const secretNumber = Math.trunc(Math.random() * 20) + 1;
+    secretNumber = Math.trunc(Math.random() * 20) + 1;
     console.log(secretNumber);
     // document.querySelector('.number').textContent = secretNumber;
-    let score = 20;
+    score = 20;
     document.querySelector('.score').textContent = score;
     document.querySelector('.guess').value = '';
     document.querySelector('.message').textContent = 'Start guessing...';
+    document.querySelector('.number').textContent = '?';
+
     document.querySelector('body').style.backgroundColor = '#222';
     document.querySelector('.number').style.width = '15rem';
 

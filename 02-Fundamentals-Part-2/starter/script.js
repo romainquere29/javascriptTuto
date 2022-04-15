@@ -291,6 +291,58 @@ GOOD LUCK 😀
 //     console.log(`${mark.fullname}'s bmi : ${mark.bmi} is lower than ${john.fullname}'s bmi :  ${john.bmi}`);
 // }
 
-for (let rep=1; rep <= 10;rep+=1) {
-    console.log(`Lifting weights repetition ${rep} 💪`);
+// for (let rep=1; rep <= 10;rep+=1) {
+//     console.log(`Lifting weights repetition ${rep} 💪`);
+// }
+
+
+
+const john = [
+    'John Smith',
+    'male',
+    92,
+    1.95,
+    'Plozévet',
+    ['toto','Titi',"Tata",5]
+]
+
+// for (let i = 0; i < john.length; i++)
+// {
+//     // Continue ignores the curent occurence of the loop
+//     // if (typeof(john[i]) !== 'string') continue;
+//     // Break end the loops
+//     if (typeof(john[i]) === 'number') break;
+//     console.log(john[i]);
+// }
+
+// for (let i = john.length - 1; i >= 0; i--)
+// {
+//     // Continue ignores the curent occurence of the loop
+//     // if (typeof(john[i]) !== 'string') continue;
+//     // Break end the loops
+//     console.log(john[i]);
+//     if (typeof(john[i]) === 'object') {
+//         console.log('This is an arrray')
+//         for (let o = 0; o < john[i].length; o++) {
+//             console.log(john[i][o]);
+//         }
+//     }
+// }
+
+// for (let rep = 1; rep <= 10 ; rep++) {
+//     console.log(`Loop - Repitition number : ${rep}`);
+// }
+
+// let rep = 1
+// while (rep <= 10) {
+//     console.log(`While - Repitition number : ${rep}`);
+//     rep++;
+// }
+
+let dice = Math.trunc(Math.random() * 6) + 1;
+// console.log(dice)
+
+while (dice !== 6){
+    console.log(dice)
+    dice = Math.trunc(Math.random() * 6) + 1;
 }

@@ -5,6 +5,7 @@
 let secretNumber = Math.trunc(Math.random() * 20) + 1;
 console.log(secretNumber);
 let score = 20;
+let highscore = 0;
 // document.querySelector('.number').textContent = secretNumber;
 
 document.querySelector('.check').addEventListener('click',function () {
@@ -20,6 +21,10 @@ document.querySelector('.check').addEventListener('click',function () {
         document.querySelector('.number').style.width = '30rem';
         document.querySelector('.message').textContent = 'It\'s correct !';
         document.querySelector('.number').textContent = secretNumber;
+        console.log(highscore);
+        score > highscore ? highscore = score : highscore=highscore;
+        console.log(highscore);
+        document.querySelector('.highscore').textContent = highscore;
     }
     else if (guess > secretNumber) {
         if (score > 1) {
@@ -57,5 +62,5 @@ document.querySelector('.again').addEventListener('click',function () {
 
     document.querySelector('body').style.backgroundColor = '#222';
     document.querySelector('.number').style.width = '15rem';
-
 })
+

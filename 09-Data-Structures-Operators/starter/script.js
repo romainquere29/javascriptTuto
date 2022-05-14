@@ -39,7 +39,38 @@ const restaurant = {
     console.log(`Here is your delicious pasta with ${ing1}, ${ing2} and  ${ing3} `);
   },
 
+  orderPizza: function(mainIngredient, ...otherIngredients) {
+    console.log(mainIngredient);
+    console.log(otherIngredients);
+  }
 };
+
+// const rest1 = {
+//   name: 'Capri',
+//   numGuests: 0,
+// }
+
+// const rest2 = {
+//   name: 'La Piazza',
+//   owner: 'Giovanni Rossi',
+// }
+
+// Will assign 10 if rest1.numGuests is a falthy value (null,undefined,'',0)
+// rest1.numGuests = rest1.numGuests || 10;
+// rest2.numGuests = rest2.numGuests || 10;
+
+// Will assign 10 if rest1.numGuests null or undefined
+// rest1.numGuests ??= 10;
+// rest2.numGuests ??= 10;
+
+
+// rest1.owner = rest1.owner && 'ANONYMOUS' ;
+// rest2.owner = rest2.owner && 'ANONYMOUS' ;
+
+// Assign a value if exists
+// rest1.owner &&= 'ANONYMOUS' ;
+// rest2.owner &&= 'ANONYMOUS' ;
+// console.log(rest1,rest2);
 
 // restaurant.orderDelivery( {
 //   time: '22:30',
@@ -134,7 +165,167 @@ const restaurant = {
 // const newRestaurant = {...restaurant, founder: 'Romain Q'};
 // console.log(newRestaurant);
 
-const newRestaurant = {...restaurant};
-newRestaurant.name = 'Classica San Sebastian';
-console.log(restaurant);
-console.log(newRestaurant);
+// const newRestaurant = {...restaurant};
+// newRestaurant.name = 'Classica San Sebastian';
+// console.log(restaurant);
+// console.log(newRestaurant);
+
+// // SPREAD because on RIGHT side of =
+// const arr = [1,2,...[3,4,5]];
+// console.log(arr);
+
+// // REST because on LEFT side of =
+// const [a,b,...others]  = [1,2,3,4,5];
+// console.log(a);
+// console.log(b);
+// console.log(others);
+
+// // Rest element should be the latest element of destructuring
+// const [pizza,,risotto,...otherFood]=[...restaurant.mainMenu, ...restaurant.starterMenu];
+// console.log(pizza,risotto,otherFood);
+
+// const {sat,...weekdays} = restaurant.openingHours;
+// console.log(sat,weekdays);
+
+// const add = function(...numbers) {
+//   console.log(numbers);
+//   let sum = 0;
+//   for (let i = 0; i < numbers.length; i++) {
+//     sum+=numbers[i];
+//   }
+//   console.log(sum);
+// }
+
+// add(2,3);
+// add(5,3,7,2);
+
+// const x = [5,3,7,2];
+// add(...x);
+
+// restaurant.orderPizza('mushrooms', 'onions', 'tomatoes');
+// restaurant.orderPizza('mushrooms');
+
+// console.log(3 || 'Jonas');
+// console.log('' || 'Jonas');
+// console.log(true || 0);
+// console.log(false || 0);
+// console.log(undefined || null);
+
+// restaurant.numGuests = 0;
+// const guests1 = restaurant.numGuests ? restaurant.numGuests : 3;
+// const guests2 = restaurant.numGuests||1;
+// const guests3 = restaurant.numGuests??1;
+
+// console.log(guests1, guests2, guests3);
+// console.log(guests2);
+
+// console.log(0 && 'Jonas');
+// console.log(7 && 'Jonas');
+
+// console.log(7 && 'Jonas' && null && 23);
+// console.log(7 && 'Jonas' && 0 && 23);
+// console.log(7 && 'Jonas' && 23);
+
+// // if (restaurant.orderPizza) {
+// //   restaurant.orderPizza('mushrooms', 'spinach');
+// // }
+
+// restaurant.orderPizza && restaurant.orderPizza('mushrooms', 'spinach');
+// restaurant.orderPizza2 && restaurant.orderPizza2('mushrooms', 'spinach');
+
+
+const game = {
+  team1: 'Bayern Munich',
+  team2: 'Borrussia Dortmund',
+  players: [
+    [
+      'Neuer',
+      'Pavard',
+      'Martinez',
+      'Alaba',
+      'Davies',
+      'Kimmich',
+      'Goretzka',
+      'Coman',
+      'Muller',
+      'Gnarby',
+      'Lewandowski',
+    ],
+    [
+      'Burki',
+      'Schulz',
+      'Hummels',
+      'Akanji',
+      'Hakimi',
+      'Weigl',
+      'Witsel',
+      'Hazard',
+      'Brandt',
+      'Sancho',
+      'Gotze',
+    ],
+  ],
+  score: '4:0',
+  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
+  date: 'Nov 9th, 2037',
+  odds: {
+    team1: 1.33,
+    x: 3.25,
+    team2: 6.5,
+  },
+};
+
+///////////////////////////////////////
+// Coding Challenge #1
+
+/* 
+We're building a football betting app (soccer for my American friends 😅)!
+
+Suppose we get data from a web service about a certain game (below). In this challenge we're gonna work with the data. So here are your tasks:
+
+1. Create one player array for each team (variables 'players1' and 'players2')
+2. The first player in any player array is the goalkeeper and the others are field players. For Bayern Munich (team 1) create one variable ('gk') with the goalkeeper's name, and one array ('fieldPlayers') with all the remaining 10 field players
+3. Create an array 'allPlayers' containing all players of both teams (22 players)
+4. During the game, Bayern Munich (team 1) used 3 substitute players. So create a new array ('players1Final') containing all the original team1 players plus 'Thiago', 'Coutinho' and 'Perisic'
+5. Based on the game.odds object, create one variable for each odd (called 'team1', 'draw' and 'team2')
+6. Write a function ('printGoals') that receives an arbitrary number of player names (NOT an array) and prints each of them to the console, along with the number of goals that were scored in total (number of player names passed in)
+7. The team with the lower odd is more likely to win. Print to the console which team is more likely to win, WITHOUT using an if/else statement or the ternary operator.
+
+TEST DATA FOR 6: Use players 'Davies', 'Muller', 'Lewandowski' and 'Kimmich'. Then, call the function again with players from game.scored
+
+GOOD LUCK 😀
+*/
+// const players1 = game.players[0];
+// const players2 = game.players[1];
+const [players1,players2] = game.players;
+console.log(players1,players2);
+
+const [gk, ...fieldPlayers] = players1;
+console.log(gk,fieldPlayers);
+
+const allPlayers = [...players1,...players2];
+console.log(allPlayers);
+
+const players1Final = [...players1,'Thiago', 'Coutinho' , 'Perisic'];
+console.log(players1Final);
+
+// const team1 = game.odds.team1;
+// const draw = game.odds.x;
+// const team2 = game.odds.team2;
+console.log(game.odds)
+const {team1,x:draw,team2} = game.odds
+// 'team1', 'draw' and 'team2'
+console.log(team1,draw,team2);
+
+const printGoals = function(...playerName) {
+  // console.log(playerName);
+  console.log(`${playerName.length} goals were scored by :`);
+  for (let i = 0; i < playerName.length; i++) {
+    console.log(playerName[i]);
+  }
+}
+printGoals('Davies', 'Muller', 'Lewandowski', 'Kimmich');
+printGoals('Davies', 'Muller');
+printGoals(...game.scored);
+
+console.log(team1<team2&&game.team1||team2<team1&&game.team2);

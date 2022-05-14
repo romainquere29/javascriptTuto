@@ -26,4 +26,115 @@ const restaurant = {
       close: 24,
     },
   },
+
+  order: function (starterIndex, mainIdex) {
+    return [this.starterMenu[starterIndex],this.mainMenu[mainIdex]];
+  },
+
+  orderDelivery: function({starterIndex=1, mainIndex=2, time='20:00', address='Bourg'}) {
+    console.log(`Order received: ${this.starterMenu[starterIndex]} + ${this.mainMenu[mainIndex]} will be delivered for ${time} to ${address}`);
+  },
+
+  orderPasta: function(ing1, ing2, ing3) {
+    console.log(`Here is your delicious pasta with ${ing1}, ${ing2} and  ${ing3} `);
+  },
+
 };
+
+// restaurant.orderDelivery( {
+//   time: '22:30',
+//   address: 'Merros Huella, Plozevet',
+//   mainIndex: 2,
+//   starterIndex: 2,
+// })
+
+// restaurant.orderDelivery( {
+//   address: 'Merros Izella, Plozevet',
+//   mainIndex: 0,
+// })
+
+// const arr = [0,1,2];
+// const [x,y,z] = arr;
+// console.log(x,y,z);
+
+// let [main,,secondary] = restaurant.categories;
+// console.log(main,secondary);
+
+// [secondary,main]=[main,secondary];
+// console.log(main,secondary);
+
+// // const temp = main;
+// // main = secondary;
+// // secondary = temp;
+// // console.log(main,secondary);
+// const [starter,mainCourse] = restaurant.order(0,2);
+// console.log(starter, mainCourse);
+
+// const nested = [2,4,[5,6]];
+// const [i, ,[j,k]]=nested;
+// console.log(i,j,k);
+
+// // Set default values which are taken into acocunt when arrays is shorter than expected
+// const [p=1,q=1,r=1]= [8,9];
+// console.log(p,q,r);
+
+// const {name:nameRestaurant,openingHours,categories} = restaurant;
+// console.log(nameRestaurant, openingHours,categories);
+
+
+// const {menu = [], starterMenu:starters= []} = restaurant;
+// console.log(menu,starters);
+
+// //Mutating variables
+// let a=111;
+// let b=999;
+// const obj = {a:23 , b:7, c:14};
+
+// ({a,b} = obj);
+// console.log(a,b);
+
+// const {openingHours} = restaurant;
+// const {fri : {open:o, close:c}} = openingHours;
+// console.log(openingHours);
+// console.log(o,c);
+
+// const arr = [7,8,9];
+// const badNewArr = [1,2, arr[0], arr[1], arr[2]];
+// console.log(badNewArr);
+
+// const newArr = [1,2, ...arr];
+// console.log(newArr);
+// console.log(...newArr);
+
+
+// const newMenu = [...restaurant.mainMenu, 'Gnocci'];
+// console.log(newMenu);
+
+// restaurant.mainMenu.push('Gnocci');
+// console.log(restaurant.mainMenu)
+
+// Copy array
+// const mainMenuCopy = [...restaurant.mainMenu];
+// console.log(mainMenuCopy);
+
+// const menu = [ ...restaurant.starterMenu, ...restaurant.mainMenu];
+// //const menu = restaurant.starterMenu  + restaurant.mainMenu;
+// console.log(menu);
+
+// const str = 'Romain';
+// const letters = [...str, ' ', 'SSSS'];
+// console.log(letters);
+
+// const ingredients = [prompt('Lets make Pasta! Ingredient 1'), prompt('Lets make Pasta! Ingredient 2'), prompt('Lets make Pasta! Ingredient 3')] ;
+// console.log(ingredients);
+
+// restaurant.orderPasta(...ingredients);
+// restaurant.orderPasta(ingredients[0],ingredients[1],ingredients[2]);
+
+// const newRestaurant = {...restaurant, founder: 'Romain Q'};
+// console.log(newRestaurant);
+
+const newRestaurant = {...restaurant};
+newRestaurant.name = 'Classica San Sebastian';
+console.log(restaurant);
+console.log(newRestaurant);

@@ -311,13 +311,13 @@ document.querySelector('.poll').addEventListener('click',poll.registerNewAnswer.
 // const perGroup = 6;
 // boardPassengers(180,5);
 
-( function () {
-    const header = document.querySelector('h1');
-    header.style.color='red';
+// ( function () {
+//     const header = document.querySelector('h1');
+//     header.style.color='red';
 
-    document.querySelector('body').addEventListener('click', function() {
-            header.style.color='blue';
-        });
-})();
+//     document.querySelector('body').addEventListener('click', function() {
+//             header.style.color='blue';
+//         });
+// })();
 
 // console.dir(window);

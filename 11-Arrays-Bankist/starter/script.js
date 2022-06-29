@@ -191,9 +191,65 @@ HINT: Use tools from all lectures in this section so far 😉
 TEST DATA 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3]
 TEST DATA 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
 
+// let arr = ['a', 'b', 'c', 'd', 'e'];
+
+
+// console.log(arr.slice(2));
+// console.log(arr);
+// // const [first,...others]=arr;
+// // console.log(first);
+// // console.log(others);
+
+// console.log(arr.splice(2));
+// console.log(arr);
+// console.log(arr.splice(-1));
+// console.log(arr);
+// // splice cut from the initial element not slice
+
+
+// arr = ['a', 'b', 'c', 'd', 'e'];
+// const arr2 = ['j','i','h','g','f'];
+
+// console.log(arr2.reverse());
+// console.log(arr2);
+
+// const letter = arr.concat(arr2);
+// console.log(letter);
+
+// console.log(letter.join(' - '));
+
+// const arr = [23, 11, 64];
+// console.log(arr[0]);
+// console.log(arr.at(0));
+
+// console.log(arr[arr.length-1]);
+// console.log(arr.slice(-1)[0]);
+// console.log(arr.at(-1));
+// console.log(arr.at(-2));
+
+// console.log('Romain'.at(0));
+// console.log('Romain'.at(-1));
+
+
+///////////////////////////////////////
+// Coding Challenge #2
+
+/* 
+Let's go back to Julia and Kate's study about dogs. This time, they want to convert dog ages to human ages and calculate the average age of the dogs in their study.
+
+Create a function 'calcAverageHumanAge', which accepts an arrays of dog's ages ('ages'), and does the following things in order:
+
+1. Calculate the dog age in human years using the following formula: if the dog is <= 2 years old, humanAge = 2 * dogAge. If the dog is > 2 years old, humanAge = 16 + dogAge * 4.
+2. Exclude all dogs that are less than 18 human years old (which is the same as keeping dogs that are at least 18 years old)
+3. Calculate the average human age of all adult dogs (you should already know from other challenges how we calculate averages 😉)
+4. Run the function for both test datasets
+
+TEST DATA 1: [5, 2, 4, 1, 15, 8, 3]
+TEST DATA 2: [16, 6, 10, 5, 6, 1, 4]
+>>>>>>> bdc1e5b33edd85cfaebaa4fc0ff12622bbc8cde8:11-Arrays-Bankist/starter/script.js
+
 GOOD LUCK 😀
 */
-
 
 // const julia1 = [3, 5, 2, 12, 7];
 // const kate1 = [4, 1, 15, 8, 3];
@@ -286,3 +342,21 @@ console.log(balance2);
 
 const maxValue = movements.reduce((acc,cur) => acc > cur ? acc : cur, 0);
 console.log(`Max Value is ${maxValue}`);
+
+// const age = [5, 2, 4, 1, 15, 8, 3] ;
+// const age = [16, 6, 10, 5, 6, 1, 4];
+// const HumanAge = age.map( element => element <= 2 ? element * 2 : 16 + element * 4);
+// const HumanAgeAdult = HumanAge.filter( element => element >= 18);
+// const HumanAgeAdultAvg = HumanAgeAdult.reduce(function(previous,current,index) {
+//   return previous + current;
+// },0) / HumanAgeAdult.length;
+// console.log(age);
+// console.log(HumanAge);
+// console.log(HumanAgeAdult);
+// console.log(HumanAgeAdultAvg);
+
+const eurToUsd = 1.1;
+const totalDepositsUSD = movements.filter(mov => mov > 0)
+.map(mov => mov * eurToUsd)
+.reduce((acc,mov) => acc+mov,0);
+console.log(totalDepositsUSD);

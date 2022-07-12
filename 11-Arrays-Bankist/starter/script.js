@@ -86,33 +86,15 @@ const displayMovements = function(movements) {
     containerMovements.insertAdjacentHTML('afterbegin', html);
   })
 }
-displayMovements(account1.movements);
 
-const calcDisplaySummary = function(movements) {
-  const incomes = movements.filter(mov => mov > 0).reduce((previous,current)  => previous + current,0);
+const calcDisplaySummary = function(acc) {
+  const incomes = acc.movements.filter(mov => mov > 0).reduce((previous,current)  => previous + current,0);
   labelSumIn.textContent = incomes+'€';
-  const outcomes = movements.filter(mov => mov < 0).reduce((previous,current) => previous + current,0);
+  const outcomes = acc.movements.filter(mov => mov < 0).reduce((previous,current) => previous + current,0);
   labelSumOut.textContent = `${Math.abs(outcomes)}€`;
- const interest =  movements.filter(mov => mov > 0).map(deposit => deposit * 0.012).filter(deposit => deposit >= 1).reduce((previous,current)=> previous + current,0);
+ const interest =  acc.movements.filter(mov => mov > 0).map(deposit => deposit * acc.interestRate / 100).filter(deposit => deposit >= 1).reduce((previous,current)=> previous + current,0);
   labelSumInterest.textContent = interest+'€';
 }
-calcDisplaySummary(account1.movements);
-
-
-// const user = 'Steven Thomas Williams';
-
-// let username = '';
-// user.toLowerCase().split(' ').forEach(function(word) {
-//   username+=word.slice(0,1);
-//   // username+=word[0];
-// });
-
-// const username2 = user.toLowerCase().split(' ').map(name => name[0]).join('');
-
-
-// // const username = user.slice(0,1);
-// console.log(username);
-// console.log(username2);
 
 const CreateUsernames = function (accts) {
   accts.forEach(function(acc) {
@@ -121,7 +103,7 @@ const CreateUsernames = function (accts) {
 }
 
 console.log(CreateUsernames(accounts));
-// console.log(accounts);
+console.log(accounts);
 
 const calcPrintBalance = function(movements) {
   const balance = movements.reduce((previous,current)=> previous + current, 0);
@@ -129,8 +111,48 @@ const calcPrintBalance = function(movements) {
   console.log(labelBalance);
 }
 
-calcPrintBalance(account1.movements);
 
+//Event handler Login
+let UserAccount;
+let isValidatedUser = false;
+btnLogin.addEventListener('click', function(event) {
+  event.preventDefault();
+  console.log('LOGIN');
+  // console.log(inputLoginUsername.value);
+  UserAccount = accounts.find(account => account.username === inputLoginUsername.value)
+  // console.log(UserAccount);
+  // console.log(UserAccount.pin);
+  // console.log(typeof(UserAccount.pin));
+  // console.log(inputLoginPin.value);
+  // console.log(typeof(Number(inputLoginPin.value)));
+  if (UserAccount && (Number(inputLoginPin.value) === UserAccount.pin)){
+    console.log('ID validated');
+    isValidatedUser = true;
+    // Clear input fileds
+    inputLoginUsername.value = '';
+    inputLoginPin.value = '';
+    inputLoginPin.blur();
+    //Display UI and message
+    labelWelcome.textContent = `Welcome back, ${UserAccount.owner.split(' ')[0]}`;
+    containerApp.style.opacity = 100;
+    // Display movements
+    displayMovements(UserAccount.movements);
+    // Display balance
+    calcPrintBalance(UserAccount.movements);
+    // Display summary
+    calcDisplaySummary(UserAccount);
+  }
+})
+
+//Event handler Transfer Money
+btnTransfer.addEventListener('click', function() {
+  event.preventDefault();
+  // console.log(inputTransferTo);
+  const amount = Number(inputTransferTo.value);
+  // console.log(inputTransferAmount);
+  const receiverAcc = accounts.find(account => account.username === inputTransferAmount.value);
+  console.log('Money Transfer');
+})
 
 
 /////////////////////////////////////////////////
@@ -394,9 +416,9 @@ GOOD LUCK 😀
 // console.log(calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]));
 // console.log(calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]));
 
-console.log(movements);
-console.log(movements.find(mov => mov < 0));
+// console.log(movements);
+// console.log(movements.find(mov => mov < 0));
 
-console.log(accounts);
-const account = accounts.find(acc => acc.owner === 'Jessica Davis');
-console.log(account);
+// console.log(accounts);
+// const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+// console.log(account);

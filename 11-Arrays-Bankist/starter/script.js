@@ -155,6 +155,49 @@ btnTransfer.addEventListener('click', function() {
 })
 
 
+//Event Handler Loan request
+btnLoan.addEventListener('click', function(event) {
+  event.preventDefault();
+  console.log('LOAN Request');
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && UserAccount.movements.some(mov => mov > 0.1 * amount))
+    {
+      console.log('Loan accepted');
+      UserAccount.movements.push(amount);
+      // Display movements
+      displayMovements(UserAccount.movements);
+      // Display balance
+      calcPrintBalance(UserAccount.movements);
+      // Display summary
+      calcDisplaySummary(UserAccount);
+      inputLoanAmount.value = ''
+    }
+})
+
+
+//Event Handler Close Account
+btnClose.addEventListener('click', function(event) {
+  event.preventDefault();
+  console.log('Close Button')
+  // console.log(typeof(inputCloseUsername.value));
+  // console.log(typeof(inputClosePin.value));
+  // console.log(UserAccount);
+  if (UserAccount.username === inputCloseUsername.value && UserAccount.pin === Number(inputClosePin.value))
+  {
+    console.log('User authoried to close');
+    const index = accounts.findIndex(account => account.username === UserAccount.username);
+    accounts.splice(index, 1);
+    console.log(accounts);
+
+    //Logout User => Hide UI
+    containerApp.style.opacity = 0;
+    inputLoginUsername.value = '';
+    inputLoginPin.value = '';
+
+  }
+  //const indexAccount = accounts.findIndex(account => )
+})
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -422,3 +465,31 @@ GOOD LUCK 😀
 // console.log(accounts);
 // const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 // console.log(account);
+
+// console.log(movements);
+// console.log(movements.includes(-130)); // Return boolean
+// console.log(movements.some(mov => mov > 5000)); // Return boolean
+
+// console.log(movements.every(mov => mov > 0));
+// console.log(movements.every(mov => Math.abs(mov) > 50));
+
+
+const arr = [[1,2,3], [4,5,6], 7, 8];
+const arrDeep = [[1,2,[3]], [4,5,6], 7, 8];
+console.log(arr.flat());
+console.log(arrDeep.flat(2));
+
+// Method1
+// const accountMovements = accounts.map(acc => acc.movements);
+// const allMovements  = accountMovements.flat();
+// console.log(allMovements);
+// const overalBalance = allMovements.reduce((previous,current)=>previous+current,0);
+// console.log(overalBalance);
+
+// Method2
+// const overalBalance = accounts.map(acc => acc.movements).flat().reduce((previous,current)=>previous+current,0);
+// console.log(overalBalance);
+
+// Method3
+const overalBalance = accounts.flatMap(acc => acc.movements).reduce((previous,current)=>previous+current,0);
+console.log(overalBalance);

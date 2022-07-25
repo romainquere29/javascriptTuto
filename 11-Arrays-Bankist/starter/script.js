@@ -67,14 +67,16 @@ const inputClosePin = document.querySelector('.form__input--pin');
   <div class="movements__value">4 000€</div>
 </div> */}
 
-const displayMovements = function(movements) {
+const displayMovements = function(movements, sort = false) {
 
   // console.log(containerMovements.innerHTML);
   // console.log('-----------');
   // console.log(containerMovements.textContent);
   containerMovements.innerHTML = '';
 
-  movements.forEach(function(mov,i) {
+  const movs = sort ? movements.slice().sort((a,b) => a-b) : movements;
+
+  movs.forEach(function(mov,i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const html = `
@@ -435,3 +437,46 @@ GOOD LUCK 😀
 // console.log(accounts);
 // const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 // console.log(account);
+
+// console.log(movements);
+// console.log(movements.includes(-130)); // Return boolean
+// console.log(movements.some(mov => mov > 5000)); // Return boolean
+
+// console.log(movements.every(mov => mov > 0));
+// console.log(movements.every(mov => Math.abs(mov) > 50));
+
+
+// const arr = [[1,2,3], [4,5,6], 7, 8];
+// const arrDeep = [[1,2,[3]], [4,5,6], 7, 8];
+// console.log(arr.flat());
+// console.log(arrDeep.flat(2));
+
+// Method1
+// const accountMovements = accounts.map(acc => acc.movements);
+// const allMovements  = accountMovements.flat();
+// console.log(allMovements);
+// const overalBalance = allMovements.reduce((previous,current)=>previous+current,0);
+// console.log(overalBalance);
+
+// Method2
+// const overalBalance = accounts.map(acc => acc.movements).flat().reduce((previous,current)=>previous+current,0);
+// console.log(overalBalance);
+
+// Method3
+// const overalBalance = accounts.flatMap(acc => acc.movements).reduce((previous,current)=>previous+current,0);
+// console.log(overalBalance);
+
+// const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+// console.log(owners.sort());
+// console.log(owners);
+ 
+// //return < 0, A, B (keep order)
+// //return > 0, B, A (switch order)
+
+// console.log(movements);
+// // console.log(movements.sort((a,b) => {
+// //   if (a > b) return 1;
+// //   if (b > a) return -1;
+// // }));
+
+// console.log(movements.sort((a,b) => a-b));

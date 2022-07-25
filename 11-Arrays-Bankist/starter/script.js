@@ -105,12 +105,22 @@ const CreateUsernames = function (accts) {
 console.log(CreateUsernames(accounts));
 console.log(accounts);
 
-const calcPrintBalance = function(movements) {
-  const balance = movements.reduce((previous,current)=> previous + current, 0);
-  labelBalance.textContent = `${balance}€`;
+
+const calcPrintBalance = function(account) {
+  account.balance = account.movements.reduce((previous,current)=> previous + current, 0);
+  labelBalance.textContent = `${account.balance}€`;
   console.log(labelBalance);
 }
 
+
+const updateUI = function(account) {
+  // Display movements
+  displayMovements(account.movements);
+  // Display balance
+  calcPrintBalance(account);
+  // Display summary
+  calcDisplaySummary(account); 
+}
 
 //Event handler Login
 let UserAccount;
@@ -135,12 +145,7 @@ btnLogin.addEventListener('click', function(event) {
     //Display UI and message
     labelWelcome.textContent = `Welcome back, ${UserAccount.owner.split(' ')[0]}`;
     containerApp.style.opacity = 100;
-    // Display movements
-    displayMovements(UserAccount.movements);
-    // Display balance
-    calcPrintBalance(UserAccount.movements);
-    // Display summary
-    calcDisplaySummary(UserAccount);
+    updateUI(UserAccount);
   }
 })
 
@@ -148,12 +153,20 @@ btnLogin.addEventListener('click', function(event) {
 btnTransfer.addEventListener('click', function() {
   event.preventDefault();
   // console.log(inputTransferTo);
-  const amount = Number(inputTransferTo.value);
+  const amount = Number(inputTransferAmount.value);
   // console.log(inputTransferAmount);
-  const receiverAcc = accounts.find(account => account.username === inputTransferAmount.value);
-  console.log('Money Transfer');
-})
+  const receiverAcc = accounts.find(account => account.username === inputTransferTo.value);
+  inputTransferAmount.value = '';
+  inputTransferTo.value = '';
 
+  if (amount > 0 && amount <= UserAccount.balance && receiverAcc?.username !== UserAccount.username && receiverAcc)  {
+    receiverAcc.movements.push(Math.abs(amount));
+    UserAccount.movements.push(Math.abs(amount)*-1);
+    console.log(UserAccount.movements);
+    console.log(receiverAcc.movements);
+    updateUI(UserAccount);
+  }
+})
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

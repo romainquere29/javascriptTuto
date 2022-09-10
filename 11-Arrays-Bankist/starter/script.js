@@ -517,3 +517,28 @@ GOOD LUCK 😀
 // // }));
 
 // console.log(movements.sort((a,b) => a-b));
+
+
+console.log([1,2,27,6]);
+console.log(new Array(1,2,27,6,8));
+
+const x = new Array(7);
+console.log(x);
+console.log(x.map(()=>5));
+
+x.fill(1,3);
+console.log(x);
+
+console.log(Array.from({length: 7}, () => 1));
+console.log(Array.from({length: 7}, ((current,index) => index+1)));
+console.log(Array.from({length: 7}, ((_,index) => index+1)));
+console.log(Array.from({length: 100}, ((_,index) => Math.trunc(Math.random()*6)+1)));
+
+// console.log(Math.trunc(Math.random()*6)+1);
+
+
+
+labelBalance.addEventListener('click', function () {
+  const movementsUI = Array.from(document.querySelectorAll('.movements__value'),el => Number(el.textContent.replace('€','')));
+  console.log(movementsUI);
+})

@@ -53,10 +53,32 @@ document.querySelector('.nav__links').addEventListener('click', function(e) {
 
 })
 
+// Tabbed component
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+// tabs.forEach(tab => tab.addEventListener('click', () =>
+//   console.log(tab)
+// ));
+
+tabsContainer.addEventListener('click', function(e) {
+  const clicked = e.target.closest('.operations__tab');
+  console.log(clicked);
+  //Guard class
+  if(!clicked) return;
+  const clickeNb = clicked.getAttribute('data-tab')
+  const contentToDisplay = document.querySelector('.operations__content--'+clickeNb);
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+  tabsContent.forEach(tab => tab.classList.remove('operations__content--active'));
+  contentToDisplay.classList.add('operations__content--active');
+})
+
 //191.Event propagation in Practise
 // rgb(255,255,255)
-const randomInt = (min,max) => Math.floor(Math.random() * (max - min + 1) + min);
-const randomColor = () => `rgb(${randomInt(0,255)},${randomInt(0,255)},${randomInt(0,255)})`;
+// const randomInt = (min,max) => Math.floor(Math.random() * (max - min + 1) + min);
+// const randomColor = () => `rgb(${randomInt(0,255)},${randomInt(0,255)},${randomInt(0,255)})`;
 
 
 
@@ -81,3 +103,34 @@ const randomColor = () => `rgb(${randomInt(0,255)},${randomInt(0,255)},${randomI
 // })
 
 //192. Event delegation
+
+
+
+//193.DOM Traversing
+
+// //Select child
+// const h1 = document.querySelector('h1');
+// console.log(h1.querySelectorAll('.highlight'));
+// console.log(h1.childNodes);
+// console.log(h1.children);
+// h1.firstElementChild.style.color = 'white';
+// h1.lastElementChild.style.color = 'orangered';
+
+// //Select Parent
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
+
+// h1.closest('.header').style.background = 'var(--gradient-secondary)';
+// h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// // Siblings
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
+
+// console.log(h1.previousSibling);
+// console.log(h1.nextSibling);
+
+// console.log(h1.parentElement.children);
+// [...h1.parentElement.children].forEach(function (el) {
+//   if (el !== h1) el.style.transform = 'scale(0.5)';
+// })

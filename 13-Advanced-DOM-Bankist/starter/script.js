@@ -75,6 +75,34 @@ tabsContainer.addEventListener('click', function(e) {
   contentToDisplay.classList.add('operations__content--active');
 })
 
+// Menu fade animation
+const navBar = document.querySelector('.nav');
+
+const handleOver = function(e, opacity) {
+  if(e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    // console.log(link);
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    console.log(siblings);
+    const logo = link.closest('.nav').querySelector('img');
+    siblings.forEach(el => {
+      if(el != link) {
+        el.style.opacity = opacity;
+      }
+    })
+    logo.style.opacity = opacity;
+  }
+}
+
+navBar.addEventListener('mouseover', function(e) {
+  handleOver(e, 0.5);
+});
+
+navBar.addEventListener('mouseout', function(e) {
+  handleOver(e, 1)
+});
+
+
 //191.Event propagation in Practise
 // rgb(255,255,255)
 // const randomInt = (min,max) => Math.floor(Math.random() * (max - min + 1) + min);

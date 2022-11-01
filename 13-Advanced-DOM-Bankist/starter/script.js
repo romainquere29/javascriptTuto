@@ -173,8 +173,8 @@ const sectionObserver = new IntersectionObserver(RevealSection, {
 
 sections.forEach(section => {
   // console.log(section);
-  section.classList.add('section--hidden');
-  sectionObserver.observe(section);
+  // section.classList.add('section--hidden');
+   sectionObserver.observe(section);
 });
 
 
@@ -204,7 +204,104 @@ imgTargets.forEach(imgTarget => {
   imageObserver.observe(imgTarget)
 })
 
+// 200+201 Slider
 
+// const slider = document.querySelector('.slider');
+// slider.style.transform = 'scale(0.2)';
+// slider.style.overflow = 'visible';
+
+const slides = document.querySelectorAll('.slide');
+slides.forEach((s, i) => s.style.transform = `translateX(${100*i}%)`);
+
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+const dotContainer = document.querySelector('.dots');
+let currSlide = 0;
+let translate = 0;
+const maxSlide = slides.length - 1;
+
+const createDots = function () {
+  slides.forEach(function (s,i) {
+    dotContainer.insertAdjacentHTML('beforeend', `<button class="dots__dot" data-slide="${i}"></button`);
+  })
+}
+
+const activateDot = function(slide) {
+  document.querySelectorAll('.dots__dot').forEach(dot => dot.classList.remove('dots__dot--active'));
+  document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add('dots__dot--active');
+}
+
+const nextSlide = function () {
+  if (currSlide === maxSlide) {
+    currSlide = 0; 
+    translate = maxSlide*100;
+  }  else {
+    currSlide++;
+    translate = -100;
+  }
+  slides.forEach((s, i) => {
+    // Retrieve current value and - 100% except if reach the last slide
+    let currTranslate = s.style.transform.match(/translateX\((\S+)%\)/)[1];
+    s.style.transform = `translateX(${Number(currTranslate)+translate}%)`;
+  })
+  activateDot(currSlide);
+}
+
+const prevSlide = function() {
+  if (currSlide === 0) {
+    currSlide = maxSlide; 
+    translate = -1*(maxSlide)*100;
+  }  else {
+    currSlide--;
+    translate = 100;
+  }
+  slides.forEach((s, i) => {
+    // Retrieve current value and + 100% except if reach the last slide
+    let currTranslate = s.style.transform.match(/translateX\((\S+)%\)/)[1];
+    s.style.transform = `translateX(${Number(currTranslate)+translate}%)`;
+  })
+  activateDot(currSlide);
+}
+
+const init = function() {
+  createDots();
+  activateDot(0);
+}
+init ();
+
+// Event Handlers
+btnRight.addEventListener('click', nextSlide)
+
+btnLeft.addEventListener('click', prevSlide)
+
+document.addEventListener('keydown', function(e) {
+  console.log(e);
+  if (e.key === 'ArrowLeft')
+  prevSlide();
+  if (e.key === 'ArrowRight')
+  nextSlide();
+})
+
+
+const goToSlide = function (slide) {
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+  );
+  currSlide=Number(slide);
+};
+
+dotContainer.addEventListener('click', function(e) {
+  if (e.target.classList.contains('dots__dot')){
+    // dataset/slide to retrieve the value of data-slide=
+    const slide = e.target.dataset.slide;
+    goToSlide(slide);
+    activateDot(slide);
+  }
+})
+
+
+
+// 0% 100% 200% 300%
 
 
 //191.Event propagation in Practise

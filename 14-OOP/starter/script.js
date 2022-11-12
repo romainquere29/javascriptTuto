@@ -411,31 +411,46 @@ GOOD LUCK 😀
 // martha.calcAge();
 
 class Account {
+    // Public Fields (instances) - present on all the instances of the class created
+    locale = navigator.language;
+
+    // Private fields (instances) - only callable from the class
+    #movements = [];
+    #pin;
+
     constructor(owner, currency, pin) {
         this.owner = owner;
         this.currency = currency;
-        this.pin = pin;
-        this.movements = [];
-        this.locale = navigator.language;
+        this.#pin = pin;
+        // this.locale = navigator.language;
+        // this._movements = [];
         console.log(`Thanks for opening an account ${this.owner}.`);
     }
 
+    // Public Method
+    getMovements() {
+        return this.#movements;
+    }
+
     deposit(val) {
-        this.movements.push(val);
+        this.#movements.push(val);
     }
 
     withdraw(val) {
         this.deposit(val*-1);
     }
 
-    approveLoan(val){
-        return true;
-    }
+
     requestLoan(val) {
-        if(this.approveLoan(val)){
+        if(this.#approveLoan(val)){
             this.deposit(val);
             console.log('Loan approved');
         }
+    }
+
+    //Private methods
+    #approveLoan(val){
+        return true;
     }
 }
 
@@ -444,3 +459,4 @@ acc1.deposit(100);
 acc1.withdraw(30);
 acc1.requestLoan(145);
 console.log(acc1);
+

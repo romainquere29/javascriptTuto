@@ -410,53 +410,141 @@ GOOD LUCK 😀
 // martha.introduce();
 // martha.calcAge();
 
-class Account {
-    // Public Fields (instances) - present on all the instances of the class created
-    locale = navigator.language;
+// class Account {
+//     // Public Fields (instances) - present on all the instances of the class created
+//     locale = navigator.language;
 
-    // Private fields (instances) - only callable from the class
-    #movements = [];
-    #pin;
+//     // Private fields (instances) - only callable from the class
+//     #movements = [];
+//     #pin;
 
-    constructor(owner, currency, pin) {
-        this.owner = owner;
-        this.currency = currency;
-        this.#pin = pin;
-        // this.locale = navigator.language;
-        // this._movements = [];
-        console.log(`Thanks for opening an account ${this.owner}.`);
+//     constructor(owner, currency, pin) {
+//         this.owner = owner;
+//         this.currency = currency;
+//         this.#pin = pin;
+//         // this.locale = navigator.language;
+//         // this._movements = [];
+//         console.log(`Thanks for opening an account ${this.owner}.`);
+//     }
+
+//     // Public Method
+//     getMovements() {
+//         return this.#movements;
+//         return this; // Returning this makes the methods chainable
+//     }
+
+//     deposit(val) {
+//         this.#movements.push(val);
+//         return this;
+//     }
+
+//     withdraw(val) {
+//         this.deposit(val*-1);
+//         return this;
+//     }
+
+
+//     requestLoan(val) {
+//         if(this.#approveLoan(val)){
+//             this.deposit(val);
+//             console.log('Loan approved');
+//         }
+//         return this;
+//     }
+
+//     // Available only on the class, not from the instances
+//     static helper() { 
+//         console.log('Helper')
+//     }
+
+//     //Private methods
+//     #approveLoan(val){
+//         return true;
+//     }
+// }
+
+// const acc1 = new Account('Romain', 'EUR', 1234);
+// acc1.deposit(100);
+// acc1.withdraw(30);
+// acc1.requestLoan(145);
+// console.log(acc1);
+
+// // Chaning
+// acc1.deposit(300).deposit(500).withdraw(100).requestLoan(200).withdraw(200);
+// console.log(acc1);
+
+///////////////////////////////////////
+// Coding Challenge #4
+
+/* 
+1. Re-create challenge #3, but this time using ES6 classes: create an 'EVCl' child class of the 'CarCl' class
+    Implement a 'chargeBattery' method which takes an argument 'chargeTo' and sets the battery charge to 'chargeTo';
+    Implement an 'accelerate' method that will increase the car's speed by 20, and decrease the charge by 1%. Then log a message like this: 'Tesla going at 140 km/h, with a charge of 22%';
+2. Make the 'charge' property private;
+3. Implement the ability to chain the 'accelerate' and 'chargeBattery' methods of this class, and also update the 'brake' method in the 'CarCl' class. They experiment with chining!
+
+DATA CAR 1: 'Rivian' going at 120 km/h, with a charge of 23%
+
+GOOD LUCK 😀
+*/
+
+class CarCl {
+    constructor(mark,speed) {
+        this.mark = mark;
+        this.speed = speed;
     }
 
-    // Public Method
-    getMovements() {
-        return this.#movements;
+    accelerate () {
+        this.speed += 10;
+        console.log(`Speed of ${this.mark} is ${this.speed} km/h`);
+        return this;
     }
 
-    deposit(val) {
-        this.#movements.push(val);
+    brake () {
+        this.speed -= 5;
+        console.log(`Speed of ${this.mark} is ${this.speed} km/h`);
+        return this;
     }
 
-    withdraw(val) {
-        this.deposit(val*-1);
+    get speedUS() {
+        return this.speed/1.6;
     }
 
+    set speedUS(speed) {
+        this.speed = speed*1.6;
+    }
+};
 
-    requestLoan(val) {
-        if(this.#approveLoan(val)){
-            this.deposit(val);
-            console.log('Loan approved');
-        }
+class EVCl extends CarCl {
+    #charge;
+    constructor(mark,speed,charge) {
+        super(mark,speed);
+        this.#charge = charge;
     }
 
-    //Private methods
-    #approveLoan(val){
-        return true;
+    chargeBattery(chargeTo) {
+        this.#charge = chargeTo;
+        console.log(`Speed of ${this.mark} is ${this.speed} km/h and charge is ${this.#charge}%`);
+        return this;
     }
+
+    accelerate () {
+        this.speed += 20;
+        this.#charge --;
+        console.log(`Speed of ${this.mark} is ${this.speed} km/h and charge is ${this.#charge}%`);
+        return this;
+    }
+
 }
 
-const acc1 = new Account('Romain', 'EUR', 1234);
-acc1.deposit(100);
-acc1.withdraw(30);
-acc1.requestLoan(145);
-console.log(acc1);
-
+const ford = new CarCl('Ford',120);
+ford.accelerate();
+ford.accelerate();
+ford.brake();
+console.log(ford.speedUS);
+ford.speedUS = 100;
+console.log(ford);
+const  rivian = new EVCl('Rivian', 120, 23);
+rivian.accelerate().accelerate().brake().chargeBattery(90).brake().brake().brake().accelerate();
+console.log(rivian);
+console.log(rivian.speedUS);

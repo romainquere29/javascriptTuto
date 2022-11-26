@@ -1,7 +1,5 @@
 'use strict';
 
-
-
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
 const inputType = document.querySelector('.form__input--type');
@@ -10,16 +8,26 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
+
+////////////////////////////////////
+//////// App Classes ///////////////
+
 class App {
     #map;
+    #mapZoomLevel = 13;
     #mapEvent;
     #workouts = [];
 
     constructor() {
         this._getPosition();
 
+        // Get data from local storage
+        this._getLocalStorage();
+
+        // Attach event handlers
         form.addEventListener('submit', this._newWorkout.bind(this)); // on a listener event, this will point to the event, to prevent it call wiht bind(this)
         inputType.addEventListener('change', this._toggleElevationField);
+        containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
     }
 
     _getPosition() {
@@ -33,10 +41,10 @@ class App {
     _loadMap(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-        console.log(latitude, longitude);
-        console.log(`https://www.google.fr/maps/@${latitude},${longitude}z`);
+        // console.log(latitude, longitude);
+        // console.log(`https://www.google.fr/maps/@${latitude},${longitude}z`);
     
-        this.#map = L.map('map').setView([latitude, longitude], 12);
+        this.#map = L.map('map').setView([latitude, longitude], this.#mapZoomLevel);
     
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -44,6 +52,10 @@ class App {
         
         // map.on() is an event listener for map
         this.#map.on('click', this._showForm.bind(this));
+
+        this.#workouts.forEach(work => {
+            this._renderWorkoutMarker(work);
+        });
     }
 
     _showForm(mapE) {
@@ -106,7 +118,7 @@ class App {
 
         // Add new object to workout array
         this.#workouts.push(workout);
-        console.log(this.#workouts);
+        // console.log(this.#workouts);
 
         //Render workout on map as marker
         this._renderWorkoutMarker(workout);
@@ -116,6 +128,9 @@ class App {
 
         //Hide form + Clear input fields
         this._hideForm();
+
+        //Set local storage to all workouts
+        this._setLocalStorage();
         
     }    
 
@@ -179,11 +194,49 @@ class App {
     form.insertAdjacentHTML('afterend', html);
     }
 
+    _moveToPopup(event) {
+        const workoutEl = event.target.closest('.workout');
+        if (!workoutEl) return;
+        const id = workoutEl.dataset.id;
+        const workout = this.#workouts.find(el => el.id === id);
+        // console.log(id,workout);
+        this.#map.setView(workout.coords, this.#mapZoomLevel, {
+            animate: true,
+            pan: {
+                duration: 1
+            }
+        });
+
+        // workout.click();
+    }
+
+    _setLocalStorage() {
+        localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+    }
+
+    _getLocalStorage() {
+        const data = JSON.parse(localStorage.getItem('workouts'));
+
+        if(!data) return;
+        this.#workouts = data;
+        this.#workouts.forEach(work => {
+            this._renderWorkout(work);
+        })
+    }
+
+    reset() {
+        localStorage.removeItem('workouts');
+        location.reload();
+    }
 }
+
+////////////////////////////////////////////////
+//////// Workout Classes /////////////////////
 
 class Workout {
     date = new Date();
     id = (Date.now() + '').slice(-10);
+    clicks = 0;
 
     constructor(coords, distance, duration) {
         this.coords = coords; //  [lat, lng]
@@ -197,10 +250,11 @@ class Workout {
         this.description = `${this.type[0].toUpperCase()}${this.type.slice(1)} on ${months[this.date.getMonth()]} ${this.date.getDate()}`;
     }
 
+    click() {
+        this.clicks++;
+    }
 }
 
-////////////////////////////////////////////////
-//////// Workout Classes /////////////////////
 class Running extends Workout {
     type = 'running';
     constructor(coords, distance, duration, cadence) {
@@ -234,9 +288,9 @@ class Cycling extends Workout {
 }
 const app = new App();
 
-const run1 = new Running([39,-12], 10, 45, 178);
-const cycle1 = new Cycling([39,-12], 40, 90, 100);
-console.log(run1,cycle1);
+// const run1 = new Running([39,-12], 10, 45, 178);
+// const cycle1 = new Cycling([39,-12], 40, 90, 100);
+// console.log(run1,cycle1);
 
 
 

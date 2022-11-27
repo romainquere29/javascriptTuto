@@ -50,34 +50,33 @@ const renderCountry = function(data, className = '') {
     </article>`;
     console.log(html);                                              
     countriesContainer.insertAdjacentHTML('beforeend',html);
-    countriesContainer.style.opacity = 1;
 }
 
-const GetCountryAndNeighbour = function (country) {
+// const GetCountryAndNeighbour = function (country) {
 
-    //AJAX Call country 1
-    const request = new XMLHttpRequest();
-    request.open('GET', `https://restcountries.com/v3.1/name/${country}`);
-    request.send();
+//     //AJAX Call country 1
+//     const request = new XMLHttpRequest();
+//     request.open('GET', `https://restcountries.com/v3.1/name/${country}`);
+//     request.send();
 
 
-    request.addEventListener('load', function() {
-        [data] = JSON.parse(this.responseText);
-        console.log(data);
-        renderCountry(data);
+//     request.addEventListener('load', function() {
+//         [data] = JSON.parse(this.responseText);
+//         console.log(data);
+//         renderCountry(data);
 
-        const neigbour = data.borders?.[0]; // ?. for optionnal chaining
-        //AJAX Call country 2
-    const request2 = new XMLHttpRequest();
-    request2.open('GET', `https://restcountries.com/v3.1/alpha/${neigbour}`);
-    request2.send();
-    request2.addEventListener('load', function() {
-        [data2] = JSON.parse(this.responseText);
-        console.log(data2);
-        renderCountry(data2, 'neighbour');
-    });
-    });
-}
+//         const neigbour = data.borders?.[0]; // ?. for optionnal chaining
+//         //AJAX Call country 2
+//     const request2 = new XMLHttpRequest();
+//     request2.open('GET', `https://restcountries.com/v3.1/alpha/${neigbour}`);
+//     request2.send();
+//     request2.addEventListener('load', function() {
+//         [data2] = JSON.parse(this.responseText);
+//         console.log(data2);
+//         renderCountry(data2, 'neighbour');
+//     });
+//     });
+// }
 
 // GetCountryData('france');
 // GetCountryData('portugal');
@@ -99,5 +98,62 @@ const GetCountryAndNeighbour = function (country) {
 //     request.open('GET', `https://restcountries.com/v3.1/name/${country}`);
 //     request.send();
 
-const request = fetch(`https://restcountries.com/v3.1/name/france`);
-console.log(request);
+// const request = fetch(`https://restcountries.com/v3.1/name/france`);
+// console.log(request);
+
+const renderError = function(msg) {
+    countriesContainer.insertAdjacentText('beforeend',msg);
+}
+
+const GetCountryData = function(country) {    fetch(`https://restcountries.com/v3.1/name/${country}`)
+    .then(response => {
+        if (!response.ok)
+            throw new Error(`Country not found ${response.status}`)
+        return response.json();
+    })
+    .then(data=> renderCountry(data[0]))
+    .catch(err => {
+        console.log(`${err }`);
+        renderError(`Something went wrong :  ${err.message}. Try again...`);
+    })
+    .finally(() => {
+        countriesContainer.style.opacity = 1;
+    })
+    };
+
+
+const getJSON = function(url, errorMsg = 'Someting went wrong') {
+    return fetch(url)
+    .then(response => {
+        if (!response.ok)
+            throw new Error(`${errorMsg} (${response.status})`)
+        return response.json();
+    });
+};
+
+const GetCountryAndNeighbour = function (country) {
+    getJSON(`https://restcountries.com/v3.1/name/${country}`,`Country not found`)
+    .then(function(data) {
+        renderCountry(data[0]);
+        const neighbour = data[0].borders?.[0]; // ?. for optionnal
+        // const neighbour = 'RRRRR';
+
+        console.log(neighbour);
+        return getJSON(`https://restcountries.com/v3.1/alpha/${neighbour}`, `Country not found`)})
+    .then(response => response.json())
+    .then((data) => renderCountry(data[0], 'neighbour'))
+    .catch(err => {
+        console.log(`${err }`);
+        renderError(`Something went wrong :  ${err.message}. Try again...`);
+    })
+    .finally(() => {
+        countriesContainer.style.opacity = 1;
+    })
+};
+
+btn.addEventListener('click', function() {
+    // GetCountryData('france');
+    GetCountryAndNeighbour('australia');
+});
+
+// GetCountryAndNeighbour('aaaaaa');

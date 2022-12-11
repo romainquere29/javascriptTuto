@@ -142,7 +142,7 @@ const GetCountryAndNeighbour = function (country) {
             console.log(neighbour);
             return getJSON(`https://restcountries.com/v3.1/alpha/${neighbour}`, `Country not found`)
         })
-        .then(response => response.json())
+        // .then(response => response.json())
         .then((data) => renderCountry(data[0], 'neighbour'))
         .catch(err => {
             console.log(`${err}`);
@@ -153,10 +153,10 @@ const GetCountryAndNeighbour = function (country) {
         })
 };
 
-btn.addEventListener('click', function () {
-    // GetCountryData('france');
-    GetCountryAndNeighbour('australia');
-});
+// btn.addEventListener('click', function () {
+//     // GetCountryData('france');
+//     GetCountryAndNeighbour('germany');
+// });
 
 // GetCountryAndNeighbour('aaaaaa');
 
@@ -187,11 +187,113 @@ GOOD LUCK 😀
 
 // let country ='';
 
-const whereAmI = function (lat, lng) {
-    fetch(`https://geocode.xyz/${lat},${lng}?geoit=json&auth=%27430784897542134392642x64404%27`)
+// const whereAmI = function (lat, lng) {
+//     fetch(`https://geocode.xyz/${lat},${lng}?geoit=json&auth=%27430784897542134392642x64404%27`)
+//     .then(response => {
+//     if (!response.ok) 
+//         throw new Error (`Problme with geocodind ${reponse.status}`)
+//     return response.json()})
+//     .then(data => {
+//         const country = data.country;
+//         console.log(`You're in ${data.city}, ${country}`)
+//         return fetch(`https://restcountries.com/v3.1/name/${country}`)
+//     })
+//     .then(response => {
+//         if (!response.ok)
+//             throw new Error(`Country not found ${response.status}`)
+//         return response.json();
+//     })
+//     .then(data => renderCountry(data[0]))
+//     .catch(err => {
+//         console.log(`${err}`);
+//         renderError(`Something went wrong :  ${err.message}. Try again...`);
+//     })
+//     .finally(() => {
+//         countriesContainer.style.opacity = 1;
+//     })
+// }
+
+// whereAmI(52.508, 13.3810);
+// whereAmI(19.037, 72.873);
+// whereAmI(-33.933, 18.474);
+
+// const lotteryPromise = new Promise(function(resolve, reject) {
+//     console.log('Lotter draw is happening');
+//     setTimeout(function() {
+//         if(Math.random() >= 0.5) {
+//             resolve('You Win');
+//         } else {
+//             reject(new Error ('You lost'));
+//         }
+//     }, 2000);
+// });
+
+// lotteryPromise.then(res => console.log(res))
+//     .catch(err => console.error(err));
+
+//Promisifying setTimeout
+// const wait = function(seconds) {
+//     return new Promise(function(resolve) {
+//         setTimeout(resolve, seconds * 1000);
+//     })
+// }
+
+// wait(2).then(() => {
+//     console.log('I waited for 2 seconds');
+//     return wait(1);
+//     }
+// ).then(() => console.log('I waited for 1 second'));
+
+
+
+
+// setTimeout(() => {
+//     console.log('1 second passed');
+//     setTimeout(() => {
+//         console.log('2 second passed');
+//         setTimeout(() => {
+//             console.log('3 second passed');
+//         }, 1000);
+//     }, 1000);
+// }, 1000);
+
+
+// wait(1).then(() => {
+//     console.log('1 second passed');
+//     return wait(1);
+//     }
+// ).then(() => {
+//     console.log('2 second passed');
+//     return wait(1);
+// }).then(() => console.log('3 second passed'));
+
+// Promise.resolve('abc').then(x => console.log(x));
+// Promise.reject(new Error('Problem !')).catch(x =>console.log(x));
+
+
+console.log('Getting position');
+const getPosition = function() {
+    return new Promise(function(resolve,reject) {
+        // navigator.geolocation.getCurrentPosition(
+        //     position => resolve(position),
+        //     err => reject(err)
+        // )
+        navigator.geolocation.getCurrentPosition(resolve,reject);
+    })
+}
+
+getPosition().then(pos => console.log(pos));
+
+
+const whereAmI = function () {
+    getPosition().then((pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        return fetch(`https://geocode.xyz/${lat},${lng}?geoit=json&auth=%27430784897542134392642x64404%27`)
+    })
     .then(response => {
     if (!response.ok) 
-        throw new Error (`Problme with geocodind ${reponse.status}`)
+        throw new Error (`Problem with geocodind ${reponse.status}`)
     return response.json()})
     .then(data => {
         const country = data.country;
@@ -230,3 +332,85 @@ const whereAmI = function (lat, lng) {
 // );
 // console.log('Test End');
 
+// whereAmI();
+
+// btn.addEventListener('click', whereAmI);
+
+
+///////////////////////////////////////
+// Coding Challenge #2
+
+/* 
+Build the image loading functionality that I just showed you on the screen.
+
+Tasks are not super-descriptive this time, so that you can figure out some stuff on your own. Pretend you're working on your own 😉
+
+PART 1
+1. Create a function 'createImage' which receives imgPath as an input. This function returns a promise which creates a new image (use document.createElement('img')) and sets the .src attribute to the provided image path. When the image is done loading, append it to the DOM element with the 'images' class, and resolve the promise. The fulfilled value should be the image element itself. In case there is an error loading the image ('error' event), reject the promise.
+
+If this part is too tricky for you, just watch the first part of the solution.
+
+PART 2
+2. Comsume the promise using .then and also add an error handler;
+3. After the image has loaded, pause execution for 2 seconds using the wait function we created earlier;
+4. After the 2 seconds have passed, hide the current image (set display to 'none'), and load a second image (HINT: Use the image element returned by the createImage promise to hide the current image. You will need a global variable for that 😉);
+5. After the second image has loaded, pause execution for 2 seconds again;
+6. After the 2 seconds have passed, hide the current image.
+
+TEST DATA: Images in the img folder. Test the error handler by passing a wrong image path. Set the network speed to 'Fast 3G' in the dev tools Network tab, otherwise images load too fast.
+
+GOOD LUCK 😀
+
+      <div class="images"></div>
+*/
+
+
+
+const ImgContainer = document.querySelector('.images');
+
+// return new Promise(function(resolve,reject) {
+const createImage = function(imgPath) {
+    return new Promise(function(resolve,reject) {
+        const img = document.createElement('img')
+        img.src = imgPath;
+        img.addEventListener('load', function() {
+            ImgContainer.append(img);
+            resolve(img);
+        });
+        img.addEventListener('error', function() {
+            reject(new Error('Image not found'));
+        });
+    })
+}
+
+//Promisifying setTimeout
+const wait = function(seconds) {
+    return new Promise(function(resolve) {
+        setTimeout(resolve, seconds * 1000);
+    })
+}
+
+let currentImg;
+createImage('img/img-1.jpg')
+.then((img) => {
+    currentImg = img;
+    return wait(2);
+})
+.then(() => {
+    currentImg.style.display='none';
+    return createImage('img/img-2.jpg');
+})
+.then((img) => {
+    currentImg = img;
+    return wait(2);
+})
+.then(() => {
+    currentImg.style.display='none';
+    return createImage('img/img-3.jpg');
+})
+.then((img) => {
+    currentImg = img;
+    return wait(2);
+})
+.then(() => currentImg.style.display='none')
+.catch(err => console.log(err));

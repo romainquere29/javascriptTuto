@@ -3,7 +3,7 @@ console.log('Exporting module');
 
 //Blocking code
 console.log('Start fetching Users');
-await fetch('https://jsonplaceholder.typicode.com/users');
+// await fetch('https://jsonplaceholder.typicode.com/users');
 console.log('Finish fetching Users');
 
 const shippingCost = 10;

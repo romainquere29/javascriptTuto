@@ -1,8 +1,8 @@
 //Importing module
-// import {addToCart, totalPrice as price, tq} from './shoppingCart.js'
+import { addToCart, totalPrice as price, tq } from './shoppingCart.js'
 // // import * as ShoppingCart from './shoppingCart.js'
-import add from './shoppingCart.js'
-import {cart} from './shoppingCart.js'
+// import add from './shoppingCart.js'
+// import {cart} from './shoppingCart.js'
 
 // console.log('Importing module');
 // add('boats',2);
@@ -63,3 +63,26 @@ import {cart} from './shoppingCart.js'
 
 // ShoppingCart2.addToCart('apple',3);
 // console.log(ShoppingCart2.cart);
+
+import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+// import cloneDeep from 'lodash-es';
+
+const state = {
+    cart: [
+        { product: 'bread', quantity: 5 },
+        { product: 'pizzas', quantity: 5 },
+    ],
+    user: { loggedIn: true },
+};
+
+const stateClone = Object.assign({}, state);
+// console.log(stateClone);
+const stateDeepClone = cloneDeep(state);
+state.user.loggedIn = false;
+console.log(stateClone);
+console.log(stateDeepClone);
+// console.log(stateDeepClone);
+
+if (module.hot) {
+    module.hot.accept();
+}

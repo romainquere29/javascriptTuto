@@ -2,7 +2,7 @@
   "name": "forkify",
   "version": "1.0.0",
   "description": "Recipe Application",
-  "main": "index.js",
+  "dafault": "index.html",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html"
@@ -10,11 +10,14 @@
   "author": "Romain QUERE",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^2.8.2"
+    "chokidar": "^3.5.3",
+    "parcel": "^2.8.3",
+    "process": "^0.11.10"
   },
   "dependencies": {
     "@parcel/transformer-sass": "^2.8.2",
     "core-js": "^3.27.1",
+    "fractional": "^1.0.0",
     "regenerator-runtime": "^0.13.11"
   }
 }

@@ -2,9 +2,11 @@ import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
+import paginationView from './views/paginationView';
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import paginationView from './views/paginationView.js';
 
 
 // const recipeContainer = document.querySelector('.recipe');
@@ -40,7 +42,6 @@ const controlRecipes = async function() {
 
 // controlRecipes();
 
-
 const controlSearchResults = async function() {
   try {
     // 1. Get search query
@@ -48,15 +49,16 @@ const controlSearchResults = async function() {
     if (!query) return;
 
     resultsView.renderSpinner();
-
     // 2. Load search results
     await model.loadSearchResult(query);
     // console.log(model.state.search.results);
 
     // 3. Rendering result
     // model.state.search.results.map(el => resultsView.render(el));
-    resultsView.render(model.state.search.results);
-    // resultsView.render(model.state.search.results);
+    resultsView.render(model.getSearchResultsPage(model.state.search.page));
+
+    // 4. Rendering initial pagination buttons
+    paginationView.render(model.state.search);
 
   } catch (err) {
     console.log(`${err} 💣💣💣💣`);
@@ -64,11 +66,20 @@ const controlSearchResults = async function() {
 };
 
 
+const controlPagination = function(page) {
+  // 1. Rendering new result
+  resultsView.render(model.getSearchResultsPage(page));
+
+  // 2. Rendering new buttons
+  paginationView.render(model.state.search);
+}
+
 // controlSearchResults();
 
 const init = function() {
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 }
 
 init();
@@ -77,6 +88,6 @@ init();
 // Parcel function to not refresh the page at each save
 // Force refresh of the page (clik button) should be done to take 
 // into account code changes.
-if (module.hot) {
-  module.hot.accept()
-}
+// if (module.hot) {
+//   module.hot.accept()
+// }

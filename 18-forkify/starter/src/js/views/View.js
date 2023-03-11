@@ -13,6 +13,34 @@ export default class View {
         this._parentElement.insertAdjacentHTML('afterbegin',markup);
     };
 
+    update(data) {
+      if(!data || (Array.isArray(data) && data.length === 0)) 
+        return this.renderError();
+      this._data = data;
+      const newMarkup = this._generateMarkup();
+      // Converting newMarkup string to DOM objects
+      const newDOM = document.createRange().createContextualFragment(newMarkup);
+      const newElements = Array.from(newDOM.querySelectorAll('*'));
+      // console.log(typeof(newMarkup),newMarkup);
+      // console.log(typeof(newElements) ,newElements);
+      const curElements = Array.from(this._parentElement.querySelectorAll('*'));
+      // concurElements[i]sole.log(curElements ,newElements);
+      // console.log(curElements[13].innerHTML, newElements[13].innerHTML);
+      newElements.forEach((newEl, i) => {
+        // Update changed text : Check if new and current are different and if content of nodes contains only text
+        if (!newEl.isEqualNode(curElements[i]) && curElements[i].firstChild.nodeValue.trim() !== '') {
+          // console.log(`====== ${curElements[i].firstChild?.nodeValue.trim()}`);
+          curElements[i].textContent=newEl.textContent;
+        }
+        // Update changed attributes : update values for data-update-to 
+        if (!newEl.isEqualNode(curElements[i])) {
+          Array.from(newEl.attributes).forEach(attr =>
+            curElements[i].setAttribute(attr.name, attr.value)
+            );
+        }
+      })
+    }
+
     _clear() {
         this._parentElement.innerHTML = '';
     };

@@ -14,6 +14,25 @@ class RecipeView extends View {
       ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
     };
 
+    addHandlerUpdateServings(handler) {
+      // document.querySelector('.recipe__info-buttons').addEventListener('click', function(e) {
+        this._parentElement.addEventListener('click', function(e) {
+        e.preventDefault();
+        const btn = e.target.closest('.btn--tiny');
+        if (!btn) return;
+        const newServings = btn.dataset.updateTo;
+        // Other way to proceed without attribute data-update-to
+        // let servings = document.querySelector('.recipe__info-data--people').innerHTML;
+        // if (btn.classList.contains('btn--increase-servings')) {
+        //   servings++;
+        // }
+        // if (btn.classList.contains('btn--decrease-servings')) {
+        //   servings--;
+        // }
+        if (newServings > 0) handler(newServings);
+    });
+    };
+
 
     _generateMarkup() {
         return `        
@@ -40,12 +59,12 @@ class RecipeView extends View {
             <span class="recipe__info-text">servings</span>
   
             <div class="recipe__info-buttons">
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--decrease-servings" data-update-to=${Number(this._data.servings)-1}>
                 <svg>
                   <use href="${icons}#icon-minus-circle"></use>
                 </svg>
               </button>
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--increase-servings" data-update-to=${Number(this._data.servings)+1}>
                 <svg>
                   <use href="${icons}#icon-plus-circle"></use>
                 </svg>

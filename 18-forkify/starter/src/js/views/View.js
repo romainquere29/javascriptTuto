@@ -4,18 +4,19 @@ import icons from 'url:../../img/icons.svg';
 export default class View {
     _data;
 
-    render(data) {
+    render(data, render = true) {
         if(!data || (Array.isArray(data) && data.length === 0)) 
             return this.renderError();
         this._data = data;
         const markup = this._generateMarkup();
+
+        if (!render) return markup;
+
         this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin',markup);
     };
 
     update(data) {
-      if(!data || (Array.isArray(data) && data.length === 0)) 
-        return this.renderError();
       this._data = data;
       const newMarkup = this._generateMarkup();
       // Converting newMarkup string to DOM objects
@@ -27,8 +28,9 @@ export default class View {
       // concurElements[i]sole.log(curElements ,newElements);
       // console.log(curElements[13].innerHTML, newElements[13].innerHTML);
       newElements.forEach((newEl, i) => {
+        // console.log(curElements[i].firstChild);
         // Update changed text : Check if new and current are different and if content of nodes contains only text
-        if (!newEl.isEqualNode(curElements[i]) && curElements[i].firstChild.nodeValue.trim() !== '') {
+        if (!newEl.isEqualNode(curElements[i]) && curElements[i].firstChild?.nodeValue.trim() !== '') {
           // console.log(`====== ${curElements[i].firstChild?.nodeValue.trim()}`);
           curElements[i].textContent=newEl.textContent;
         }

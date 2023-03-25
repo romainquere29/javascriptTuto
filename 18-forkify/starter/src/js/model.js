@@ -30,7 +30,7 @@ const createRecipeObject = function(data) {
 
 export const loadRecipe = async function (id) {
     try {
-        const data = await getJSON(`${API_URL}${id}`);
+        const data = await getJSON(`${API_URL}${id}?key=${API_KEY}`);
         state.recipe = createRecipeObject(data);
         // console.log(state.bookmarks,id);
         if(state.bookmarks.some(bookmark => bookmark.id === id))
@@ -47,13 +47,14 @@ export const loadRecipe = async function (id) {
 export const loadSearchResult = async function(query) {
     try {
         state.search.query = query;
-        const data = await getJSON(`${API_URL}\?search\=${query}`);
+        const data = await getJSON(`${API_URL}\?search\=${query}&key=${API_KEY}`);
         state.search.results = data.data.recipes.map(rec => {
             return {
                 id: rec.id,
                 image: rec.image_url,
                 publisher: rec.publisher,
-                title: rec.title
+                title: rec.title,
+                ...(rec.key && {key: rec.key}),
             };
         })
         // console.log(recipes);
@@ -110,7 +111,8 @@ export const uploadRecipe = async function(newRecipe) {
         const ingredients = Object.entries(newRecipe)
         .filter(el => el[0].startsWith('ingredient-') && el[1] !== '')
         .map(ing => {
-            const ingArr = ing[1].replaceAll(' ','').split(',');
+            // const ingArr = ing[1].replaceAll(' ','').split(',');
+            const ingArr = ing[1].split(',').map(el => el.trim());
             if (ingArr.length !== 3) 
                 throw new Error ('Wrong ingredient format! Please use the correct format');
             const [quantity, unit, description] = ingArr;
@@ -126,11 +128,13 @@ export const uploadRecipe = async function(newRecipe) {
             ingredients,
         };
         const data = await sendJSON(`${API_URL}?key=${API_KEY}`,recipe);
+        console.log(data);
         state.recipe = createRecipeObject(data);
         addBookmark(state.recipe);
 
 
     } catch(err) {
+        console.log(`Erreur uploadRecipe : ${err}`);
         throw err
     };
 };
